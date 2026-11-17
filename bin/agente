@@ -1,0 +1,210 @@
+#!/usr/bin/env python3
+"""agente — stato degli agenti per la shell macish (tema Segnale).
+
+Ogni agente è un file JSON in ~/.local/state/macish/agenti; la barra e il pannello
+Agenti lo leggono. Uso:
+
+  agente hook                         per gli hook di Claude Code (legge l'evento da stdin)
+  agente avvia NOME [--] COMANDO...   esegue un agente qualsiasi e ne segue lo stato
+  agente attende ID [MESSAGGIO]       segnala che l'agente ID aspetta te
+  agente stato ID STATO [TESTO]       STATO: lavora | attende | finito | errore
+  agente chiudi ID                    toglie un agente dal pannello
+  agente pulisci                      toglie quelli finiti
+  agente lista                        mostra gli agenti
+"""
+import json, os, re, shutil, subprocess, sys, time
+
+DIR = os.path.join(os.environ.get("XDG_STATE_HOME", os.path.expanduser("~/.local/state")), "macish", "agenti")
+STATI = ("lavora", "attende", "finito", "errore")
+
+
+def path(i):
+    return os.path.join(DIR, re.sub(r"[^A-Za-z0-9_.-]", "_", i) + ".json")
+
+
+def load(i):
+    try:
+        with open(path(i)) as f:
+            return json.load(f)
+    except Exception:
+        return {}
+
+
+def save(d):
+    os.makedirs(DIR, exist_ok=True)
+    tmp = path(d["id"]) + ".tmp"
+    with open(tmp, "w") as f:
+        json.dump(d, f, ensure_ascii=False)
+    os.replace(tmp, path(d["id"]))
+
+
+def poke():
+    """Avvisa la shell che qualcosa è cambiato (senza aspettare)."""
+    if shutil.which("qs"):
+        try:
+            subprocess.Popen(["qs", "-c", "macish", "ipc", "call", "agenti", "aggiorna"],
+                             stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL, start_new_session=True)
+        except Exception:
+            pass
+
+
+def active_window():
+    """Indirizzo e workspace della finestra attiva in Hyprland (il terminale dell'agente)."""
+    try:
+        out = subprocess.run(["hyprctl", "activewindow", "-j"], capture_output=True, text=True, timeout=1)
+        j = json.loads(out.stdout or "{}")
+        return j.get("address", ""), (j.get("workspace") or {}).get("id")
+    except Exception:
+        return "", None
+
+
+def update(i, state=None, **kw):
+    now = time.time()
+    d = load(i)
+    if not d:
+        d = {"id": i, "started": now, "since": now, "state": "lavora", "activity": []}
+    if state and state != d.get("state"):
+        d["state"], d["since"] = state, now
+    for k, v in kw.items():
+        if v is not None:
+            d[k] = v
+    d["updated"] = now
+    save(d)
+    poke()
+    return d
+
+
+def tick(d, now):
+    """Registra un'azione per la traccia di attività (ultimi 10 minuti)."""
+    return [t for t in d.get("activity", []) if now - t < 600][-80:] + [now]
+
+
+VERBI = {"Read": "Legge", "Edit": "Modifica", "MultiEdit": "Modifica", "Write": "Scrive", "Bash": "Esegue",
+         "Grep": "Cerca", "Glob": "Cerca", "WebFetch": "Legge dal web", "WebSearch": "Cerca sul web",
+         "Task": "Delega", "Agent": "Delega", "TodoWrite": "Aggiorna la lista", "NotebookEdit": "Modifica"}
+
+
+def describe(ev):
+    tool = ev.get("tool_name") or ""
+    inp = ev.get("tool_input") or {}
+    target = (inp.get("file_path") or inp.get("path") or inp.get("notebook_path") or inp.get("command")
+              or inp.get("pattern") or inp.get("url") or inp.get("query") or inp.get("description") or "")
+    target = str(target).strip().splitlines()[0] if target else ""
+    if "/" in target and " " not in target:
+        target = os.path.basename(target.rstrip("/"))
+    if len(target) > 60:
+        target = target[:57] + "…"
+    verb = VERBI.get(tool, tool or "Lavora")
+    return f"{verb} {target}".strip()
+
+
+def hook():
+    try:
+        ev = json.load(sys.stdin)
+    except Exception:
+        return
+    name = ev.get("hook_event_name", "")
+    sid = (ev.get("session_id") or "sessione")[:8]
+    i = "claude-" + sid
+    cwd = ev.get("cwd") or os.getcwd()
+    base = {"name": "Claude", "cwd": cwd, "project": os.path.basename(cwd.rstrip("/")) or cwd}
+    now = time.time()
+
+    if name == "SessionEnd":
+        try:
+            os.remove(path(i))
+        except FileNotFoundError:
+            pass
+        poke()
+    elif name == "SessionStart":
+        addr, ws = active_window()
+        update(i, "lavora", window=addr, workspace=ws, last="Sessione avviata", message="", **base)
+    elif name == "UserPromptSubmit":
+        # hai appena scritto nel suo terminale: è la finestra attiva
+        addr, ws = active_window()
+        update(i, "lavora", window=addr or None, workspace=ws, last="Sta pensando…", message="", **base)
+    elif name == "PreToolUse":
+        update(i, "lavora", last=describe(ev), message="", activity=tick(load(i), now), **base)
+    elif name == "Notification":
+        update(i, "attende", message=ev.get("message") or "Chiede la tua conferma", **base)
+    elif name == "Stop":
+        update(i, "finito", last="Ha finito: tocca a te", message="", **base)
+    # gli altri eventi non cambiano lo stato
+
+
+def avvia(args):
+    if not args:
+        sys.exit("uso: agente avvia NOME [--] COMANDO...")
+    nome, cmd = args[0], args[1:]
+    if cmd and cmd[0] == "--":
+        cmd = cmd[1:]
+    if not cmd:
+        cmd = [nome]
+    i = re.sub(r"[^a-z0-9]+", "-", nome.lower()).strip("-") + "-" + str(os.getpid())
+    cwd = os.getcwd()
+    addr, ws = active_window()
+    update(i, "lavora", name=nome.capitalize(), cwd=cwd, project=os.path.basename(cwd) or cwd,
+           window=addr, workspace=ws, last=" ".join(cmd)[:60], message="")
+    try:
+        rc = subprocess.call(cmd)
+    except FileNotFoundError:
+        rc = 127
+    except KeyboardInterrupt:
+        rc = 130
+    update(i, "finito" if rc == 0 else "errore", last=f"Uscito con codice {rc}")
+    sys.exit(rc)
+
+
+def lista():
+    if not os.path.isdir(DIR):
+        print("nessun agente"); return
+    for f in sorted(os.listdir(DIR)):
+        if f.endswith(".json"):
+            try:
+                d = json.load(open(os.path.join(DIR, f)))
+            except Exception:
+                continue
+            print(f"{d.get('state', '?'):8} {d['id']:28} {d.get('cwd', '')}  {d.get('message') or d.get('last', '')}")
+
+
+def main():
+    a = sys.argv[1:]
+    if not a or a[0] in ("-h", "--help", "aiuto"):
+        print(__doc__.strip()); return
+    cmd, rest = a[0], a[1:]
+    if cmd == "hook":
+        hook()
+    elif cmd == "avvia":
+        avvia(rest)
+    elif cmd == "attende" and rest:
+        update(rest[0], "attende", message=" ".join(rest[1:]) or "Chiede la tua conferma")
+    elif cmd == "stato" and len(rest) >= 2 and rest[1] in STATI:
+        txt = " ".join(rest[2:])
+        update(rest[0], rest[1], **({"message": txt} if rest[1] == "attende" else {"last": txt or None, "message": ""}))
+    elif cmd == "chiudi" and rest:
+        try:
+            os.remove(path(rest[0]))
+        except FileNotFoundError:
+            pass
+        poke()
+    elif cmd == "pulisci":
+        if os.path.isdir(DIR):
+            for f in os.listdir(DIR):
+                if f.endswith(".json"):
+                    try:
+                        if json.load(open(os.path.join(DIR, f))).get("state") in ("finito", "errore"):
+                            os.remove(os.path.join(DIR, f))
+                    except Exception:
+                        pass
+        poke()
+    elif cmd == "lista":
+        lista()
+    else:
+        sys.exit("comando non riconosciuto. agente --help per l'elenco")
+
+
+if __name__ == "__main__":
+    try:
+        main()
+    except BrokenPipeError:
+        pass

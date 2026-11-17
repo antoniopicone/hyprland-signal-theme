@@ -1,0 +1,19 @@
+# Ritocchi a livello macchina per omarchy-shell (barra, menu, pannelli di Omarchy):
+# controlli senza bordi netti, più aria, testo un po' più grande.
+# Va in ~/.config/omarchy/shell.toml e vale sopra qualunque tema.
+
+[bar]
+size-horizontal = 32
+size-vertical = 36
+
+[font]
+base-size = 13
+
+[spacing]
+scale = 1.15
+
+[controls]
+normal-fill-alpha = 0.08
+normal-border-width = 0
+hover-cursor-border-width = 0
+pressed-fill-alpha = 0.22

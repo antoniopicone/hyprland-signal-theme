@@ -1,0 +1,37 @@
+#!/usr/bin/env python3
+"""Aggiunge (o toglie con --rimuovi) gli hook di `agente` in ~/.claude/settings.json, con backup."""
+import json, os, shutil, sys, time
+
+path = os.path.expanduser("~/.claude/settings.json")
+CMD = "$HOME/.local/bin/agente hook"
+EVENTI = {"SessionStart": None, "UserPromptSubmit": None, "PreToolUse": "*",
+          "Notification": None, "Stop": None, "SessionEnd": None}
+
+data = {}
+if os.path.exists(path):
+    try:
+        data = json.load(open(path))
+    except Exception:
+        sys.exit(f"{path} non è JSON valido: lo lascio stare")
+    shutil.copy(path, f"{path}.bak.{int(time.time())}")
+
+hooks = data.setdefault("hooks", {})
+nostro = lambda h: "agente hook" in (h.get("command") or "")
+
+for ev, matcher in EVENTI.items():
+    gruppi = [g for g in hooks.get(ev, []) if not any(nostro(h) for h in g.get("hooks", []))]
+    if "--rimuovi" not in sys.argv:
+        g = {"hooks": [{"type": "command", "command": CMD, "timeout": 5}]}
+        if matcher:
+            g["matcher"] = matcher
+        gruppi.append(g)
+    if gruppi:
+        hooks[ev] = gruppi
+    else:
+        hooks.pop(ev, None)
+if not hooks:
+    data.pop("hooks", None)
+
+os.makedirs(os.path.dirname(path), exist_ok=True)
+json.dump(data, open(path, "w"), indent=2, ensure_ascii=False)
+print("  hook " + ("rimossi da" if "--rimuovi" in sys.argv else "aggiunti a") + " ~/.claude/settings.json")

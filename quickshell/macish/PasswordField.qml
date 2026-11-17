@@ -53,7 +53,7 @@ Item {
         id: go
         anchors.right: parent.right
         primary: true
-        text: "Connetti"
+        text: I18n.t("Connetti")
         onClicked: if (input.text !== "") root.submitted(input.text)
     }
 }

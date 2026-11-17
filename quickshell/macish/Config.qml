@@ -14,6 +14,9 @@ Singleton {
         "spotify"
     ]
 
+    // Lingua dell'interfaccia: "auto" (segue LANG), "it" o "en"
+    readonly property string language: "auto"
+
     // Parti della shell
     readonly property bool showBar: true          // barra in alto di Segnale (nasconde quella di Omarchy all'installazione)
     readonly property bool showWallpaper: true    // sfondo a puntini di Segnale

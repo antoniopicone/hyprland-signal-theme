@@ -31,14 +31,14 @@ Scope {
     }
 
     function showVolume() {
-        show(Sys.volumeIcon, Sys.muted ? "Audio disattivato" : "Volume", Sys.muted ? 0 : Sys.volume, !Sys.muted);
+        show(Sys.volumeIcon, Sys.muted ? I18n.t("Audio disattivato") : "Volume", Sys.muted ? 0 : Sys.volume, !Sys.muted);
     }
     function showMic() {
         show(Sys.micMuted ? "microphone-sensitivity-muted-symbolic" : "audio-input-microphone-symbolic",
-             Sys.micMuted ? "Microfono disattivato" : "Microfono attivo", 0, false);
+             Sys.micMuted ? I18n.t("Microfono disattivato") : I18n.t("Microfono attivo"), 0, false);
     }
     function showBrightness() {
-        show("display-brightness-symbolic", "Luminosità", Sys.brightness, true);
+        show("display-brightness-symbolic", I18n.t("Luminosità"), Sys.brightness, true);
     }
 
     Timer { interval: 2500; running: true; onTriggered: root.ready = true }

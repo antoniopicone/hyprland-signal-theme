@@ -59,7 +59,7 @@ Singleton {
         const d = n ? times[n.id] : null;
         if (!d) return "";
         const mins = Math.floor((Date.now() - d.getTime()) / 60000);
-        return mins < 1 ? "ora" : mins < 60 ? mins + " min fa" : Qt.formatTime(d, "HH:mm");
+        return mins < 1 ? I18n.t("ora") : mins < 60 ? I18n.t("%1 min fa", mins) : Qt.formatTime(d, "HH:mm");
     }
 
     function iconFor(n) {

@@ -49,7 +49,7 @@ Scope {
     readonly property var groups: {
         const order = [], by = {};
         for (const n of Notifs.history.slice().reverse()) {
-            const app = (n.appName || "Sistema");
+            const app = (n.appName || I18n.t("Sistema"));
             if (!(app in by)) { by[app] = []; order.push(app); }
             by[app].push(n);
         }
@@ -115,14 +115,14 @@ Scope {
                             anchors.bottom: parent.bottom
                             anchors.bottomMargin: 6
                             font.pixelSize: 28
-                            text: "NOTIFICHE"
+                            text: I18n.t("NOTIFICHE")
                         }
                         Mono {
                             anchors.right: parent.right
                             anchors.rightMargin: 4
                             anchors.bottom: parent.bottom
                             anchors.bottomMargin: 9
-                            text: Notifs.history.length === 0 ? "nessuna" : Notifs.history.length + " in tutto"
+                            text: Notifs.history.length === 0 ? I18n.t(I18n.t("nessuna")) : I18n.t("%1 in tutto", Notifs.history.length)
                         }
                     }
 
@@ -137,7 +137,7 @@ Scope {
                         Text {
                             x: 12
                             anchors.verticalCenter: parent.verticalCenter
-                            text: "Non disturbare"
+                            text: I18n.t("Non disturbare")
                             color: Theme.text
                             font.family: Theme.fontFamily
                             font.pixelSize: 13
@@ -146,7 +146,7 @@ Scope {
                             anchors.right: dndToggle.left
                             anchors.rightMargin: 10
                             anchors.verticalCenter: parent.verticalCenter
-                            text: Notifs.dnd ? "Acceso" : "Spento"
+                            text: Notifs.dnd ? I18n.t("Acceso") : I18n.t("Spento")
                         }
                         MToggle {
                             id: dndToggle
@@ -163,7 +163,7 @@ Scope {
                         width: parent.width
                         topPadding: 20
                         horizontalAlignment: Text.AlignHCenter
-                        text: "Tutto letto."
+                        text: I18n.t("Tutto letto.")
                         color: Theme.textDim
                         font.family: Theme.fontFamily
                         font.pixelSize: 13
@@ -196,11 +196,11 @@ Scope {
                                     spacing: 14
                                     LinkText {
                                         visible: group.extra > 0
-                                        text: group.open ? "Mostra meno" : "Altre " + group.extra
+                                        text: group.open ? I18n.t("Mostra meno") : I18n.t("Altre %1", group.extra)
                                         onClicked: root.toggleGroup(group.modelData.app)
                                     }
                                     LinkText {
-                                        text: "Cancella"
+                                        text: I18n.t("Cancella")
                                         onClicked: root.dismissGroup(group.modelData)
                                     }
                                 }
@@ -227,7 +227,7 @@ Scope {
                         MButton {
                             anchors.right: parent.right
                             anchors.verticalCenter: parent.verticalCenter
-                            text: "Cancella tutto"
+                            text: I18n.t("Cancella tutto")
                             onClicked: Notifs.clearAll()
                         }
                     }

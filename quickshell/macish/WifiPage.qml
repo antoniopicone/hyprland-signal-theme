@@ -21,7 +21,7 @@ Column {
     Connections {
         target: Net
         function onErrorChanged() {
-            if (Net.error === "Password errata") root.expanded = Net.errorSsid;
+            if (Net.error === I18n.t("Password errata")) root.expanded = Net.errorSsid;
         }
     }
 
@@ -30,11 +30,11 @@ Column {
     }
 
     function subtitleFor(n) {
-        if (Net.connecting === n.ssid) return "Connessione…";
+        if (Net.connecting === n.ssid) return I18n.t("Connessione…");
         if (Net.errorSsid === n.ssid && Net.error !== "") return Net.error;
-        if (n.active) return "Connesso · " + n.band;
-        if (n.enterprise) return "Rete aziendale: apri le impostazioni di rete";
-        if (Net.saved.indexOf(n.ssid) >= 0) return "Salvata";
+        if (n.active) return I18n.t("Connesso · ") + n.band;
+        if (n.enterprise) return I18n.t("Rete aziendale: apri le impostazioni di rete");
+        if (Net.saved.indexOf(n.ssid) >= 0) return I18n.t("Salvata");
         return "";
     }
 
@@ -67,7 +67,7 @@ Column {
         Text {
             visible: Net.networks.length === 0
             leftPadding: 6
-            text: "Ricerca delle reti…"
+            text: I18n.t("Ricerca delle reti…")
             color: Theme.textDim
             font.family: Theme.fontFamily
             font.pixelSize: Theme.fontSize - 1
@@ -87,7 +87,7 @@ Column {
 
                 SectionLabel {
                     visible: !entry.modelData.active && entry.modelData.ssid === (Net.networks.find(n => !n.active) || {}).ssid
-                    text: "Altre reti"
+                    text: I18n.t("Altre reti")
                 }
 
                 DeviceRow {
@@ -100,8 +100,8 @@ Column {
                     checked: entry.modelData.active
                     busy: Net.connecting === entry.modelData.ssid
                     trailingIcon: entry.modelData.secure && !entry.modelData.active ? "system-lock-screen-symbolic" : ""
-                    actionText: entry.modelData.active ? "Disconnetti"
-                              : Net.saved.indexOf(entry.modelData.ssid) >= 0 ? "Dimentica" : ""
+                    actionText: entry.modelData.active ? I18n.t("Disconnetti")
+                              : Net.saved.indexOf(entry.modelData.ssid) >= 0 ? I18n.t("Dimentica") : ""
                     onClicked: root.choose(entry.modelData)
                     onActionClicked: entry.modelData.active ? Net.disconnect() : Net.forget(entry.modelData.ssid)
                 }
@@ -111,7 +111,7 @@ Column {
                     x: 6
                     width: parent.width - 12
                     visible: root.expanded === entry.modelData.ssid
-                    placeholder: "Password per " + entry.modelData.ssid
+                    placeholder: I18n.t("Password per ") + entry.modelData.ssid
                     onVisibleChanged: if (visible) grab()
                     onSubmitted: p => { root.expanded = ""; Net.connect(entry.modelData, p); }
                     onCancelled: root.expanded = ""
@@ -127,7 +127,7 @@ Column {
         LinkText {
             x: 6
             anchors.verticalCenter: parent.verticalCenter
-            text: "Impostazioni di rete…"
+            text: I18n.t("Impostazioni di rete…")
             onClicked: root.advanced()
         }
 

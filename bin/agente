@@ -79,9 +79,16 @@ def tick(d, now):
     return [t for t in d.get("activity", []) if now - t < 600][-80:] + [now]
 
 
+IT = (os.environ.get("MACISH_LANG") or os.environ.get("LC_ALL") or os.environ.get("LC_MESSAGES")
+      or os.environ.get("LANG") or "").lower().startswith("it")
 VERBI = {"Read": "Legge", "Edit": "Modifica", "MultiEdit": "Modifica", "Write": "Scrive", "Bash": "Esegue",
          "Grep": "Cerca", "Glob": "Cerca", "WebFetch": "Legge dal web", "WebSearch": "Cerca sul web",
          "Task": "Delega", "Agent": "Delega", "TodoWrite": "Aggiorna la lista", "NotebookEdit": "Modifica"}
+if not IT:
+    VERBI = {"Read": "Reads", "Edit": "Edits", "MultiEdit": "Edits", "Write": "Writes", "Bash": "Runs",
+             "Grep": "Searches", "Glob": "Searches", "WebFetch": "Fetches from the web", "WebSearch": "Searches the web",
+             "Task": "Delegates", "Agent": "Delegates", "TodoWrite": "Updates the list", "NotebookEdit": "Edits"}
+STARTED, THINKING = ("Sessione avviata", "Sta pensando…") if IT else ("Session started", "Thinking…")
 
 
 def describe(ev):
@@ -94,7 +101,7 @@ def describe(ev):
         target = os.path.basename(target.rstrip("/"))
     if len(target) > 60:
         target = target[:57] + "…"
-    verb = VERBI.get(tool, tool or "Lavora")
+    verb = VERBI.get(tool, tool or ("Lavora" if IT else "Working"))
     return f"{verb} {target}".strip()
 
 
@@ -118,15 +125,15 @@ def hook():
         poke()
     elif name == "SessionStart":
         addr, ws = active_window()
-        update(i, "lavora", window=addr, workspace=ws, last="Sessione avviata", message="", **base)
+        update(i, "lavora", window=addr, workspace=ws, last=STARTED, message="", **base)
     elif name == "UserPromptSubmit":
         # hai appena scritto nel suo terminale: è la finestra attiva
         addr, ws = active_window()
-        update(i, "lavora", window=addr or None, workspace=ws, last="Sta pensando…", message="", **base)
+        update(i, "lavora", window=addr or None, workspace=ws, last=THINKING, message="", **base)
     elif name == "PreToolUse":
         update(i, "lavora", last=describe(ev), message="", activity=tick(load(i), now), **base)
     elif name == "Notification":
-        update(i, "attende", message=ev.get("message") or "Chiede la tua conferma", **base)
+        update(i, "attende", message=ev.get("message") or "", **base)
     elif name == "Stop":
         update(i, "finito", last="Ha finito: tocca a te", message="", **base)
     # gli altri eventi non cambiano lo stato
@@ -177,7 +184,7 @@ def main():
     elif cmd == "avvia":
         avvia(rest)
     elif cmd == "attende" and rest:
-        update(rest[0], "attende", message=" ".join(rest[1:]) or "Chiede la tua conferma")
+        update(rest[0], "attende", message=" ".join(rest[1:]))
     elif cmd == "stato" and len(rest) >= 2 and rest[1] in STATI:
         txt = " ".join(rest[2:])
         update(rest[0], rest[1], **({"message": txt} if rest[1] == "attende" else {"last": txt or None, "message": ""}))

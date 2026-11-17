@@ -17,9 +17,9 @@ Singleton {
 
     readonly property int onlineCount: peers.filter(p => p.online).length
     readonly property string headline: !known ? "…"
-        : backend === "NeedsLogin" ? "Accesso richiesto"
-        : !running ? "Spento"
-        : selfIp !== "" ? selfIp : "Attivo"
+        : backend === "NeedsLogin" ? I18n.t("Accesso richiesto")
+        : !running ? I18n.t("Spento")
+        : selfIp !== "" ? selfIp : I18n.t("Attivo")
 
     function refresh() {
         if (!proc.running) proc.running = true;

@@ -123,7 +123,7 @@ Singleton {
             if (code !== 0) {
                 root.errorSsid = ssid;
                 root.error = /secret|password|psk|802-11-wireless-security/i.test(conn.err)
-                    ? "Password errata" : "Connessione non riuscita";
+                    ? I18n.t("Password errata") : I18n.t("Connessione non riuscita");
                 // nmcli lascia un profilo con la password sbagliata: lo togliamo
                 if (conn.isNew) Quickshell.execDetached(["nmcli", "connection", "delete", "id", ssid]);
             }

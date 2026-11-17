@@ -12,8 +12,8 @@ Column {
     readonly property var ents: ha.entities
 
     readonly property var modeNames: ({
-        cool: "Freddo", heat: "Caldo", dry: "Deumidifica", fan_only: "Ventola",
-        auto: "Auto", heat_cool: "Auto", off: "Spento"
+        cool: I18n.t("Freddo"), heat: I18n.t("Caldo"), dry: I18n.t("Deumidifica"), fan_only: I18n.t("Ventola"),
+        auto: "Auto", heat_cool: "Auto", off: I18n.t("Spento")
     })
 
     function lightsOnIn(room) {
@@ -24,15 +24,15 @@ Column {
 
     function lightSub(v) {
         if (!v) return "";
-        if (!v.available) return "Non disponibile";
-        if (!v.on) return "Spenta";
-        return v.dim ? Math.round(v.brightness * 100) + "%" : "Accesa";
+        if (!v.available) return I18n.t("Non disponibile");
+        if (!v.on) return I18n.t("Spenta");
+        return v.dim ? Math.round(v.brightness * 100) + "%" : I18n.t("Accesa");
     }
 
     function climateSub(v) {
         if (!v) return "";
-        if (!v.available) return "Non disponibile";
-        if (!v.on) return "Spento" + (v.current !== null ? " · " + v.current + "°" : "");
+        if (!v.available) return I18n.t("Non disponibile");
+        if (!v.on) return I18n.t("Spento") + (v.current !== null ? " · " + v.current + "°" : "");
         const parts = [modeNames[v.mode] || v.mode];
         if (v.current !== null) parts.push(v.current + "°");
         if (v.target !== null) parts.push("→ " + v.target + "°");
@@ -41,14 +41,14 @@ Column {
 
     SubHeader {
         width: parent.width
-        title: "Casa"
+        title: I18n.t("Casa")
         onBack: root.back()
 
         MButton {
             implicitHeight: 30
             visible: root.ha.online && root.ha.lightsOn > 0
             icon: "weather-clear-night-symbolic"
-            text: "Spegni tutto"
+            text: I18n.t("Spegni tutto")
             onClicked: root.ha.allLightsOff()
         }
     }
@@ -72,7 +72,7 @@ Column {
     Card {
         width: parent.width
         visible: root.ha.online && root.structure.scenes.length > 0
-        title: "Scene"
+        title: I18n.t("Scene")
 
         Flow {
             width: parent.width
@@ -99,8 +99,8 @@ Column {
             id: roomCard
             required property var modelData
             width: root.width
-            title: (modelData.name !== "" ? modelData.name : "Altro")
-                   + (root.lightsOnIn(modelData) > 0 ? " · " + root.lightsOnIn(modelData) + " accese" : "")
+            title: (modelData.name !== "" ? modelData.name : I18n.t("Altro"))
+                   + (root.lightsOnIn(modelData) > 0 ? " · " + root.lightsOnIn(modelData) + I18n.t(" accese") : "")
             chevron: false
 
             Repeater {
@@ -124,7 +124,7 @@ Column {
                     width: roomCard.width - 24
                     icon: "system-shutdown-symbolic"
                     title: v ? v.name : modelData
-                    subtitle: v ? (v.available ? (v.on ? "Acceso" : "Spento") : "Non disponibile") : ""
+                    subtitle: v ? (v.available ? (v.on ? I18n.t("Acceso") : I18n.t("Spento")) : I18n.t("Non disponibile")) : ""
                     active: v ? v.on : false
                     onClicked: root.ha.toggleDevice(modelData)
                 }
@@ -205,7 +205,7 @@ Column {
         LinkText {
             x: 6
             anchors.verticalCenter: parent.verticalCenter
-            text: "Apri pianta e dettagli luce…"
+            text: I18n.t("Apri pianta e dettagli luce…")
             onClicked: root.advanced()
         }
     }

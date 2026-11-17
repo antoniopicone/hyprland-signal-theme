@@ -65,7 +65,7 @@ Scope {
 
                     DockItem {
                         iconName: "view-app-grid-symbolic"
-                        label: "Applicazioni"
+                        label: I18n.t("Applicazioni")
                         onTriggered: Ui.toggleLauncher()
                     }
                     Item {

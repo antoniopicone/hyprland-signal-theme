@@ -162,11 +162,11 @@ Scope {
                         anchors.rightMargin: 4
                         anchors.bottom: parent.bottom
                         anchors.bottomMargin: 4
-                        Mono { anchors.right: parent.right; text: Qt.locale("it_IT").toString(clock.date, "ddd d MMM") }
+                        Mono { anchors.right: parent.right; text: Qt.locale(I18n.locale).toString(clock.date, "ddd d MMM") }
                         Mono {
                             anchors.right: parent.right
                             visible: Sys.hasBattery
-                            text: "Bat " + Math.round(Sys.batteryLevel * 100) + "%" + (Sys.charging ? " · in carica" : "")
+                            text: "Bat " + Math.round(Sys.batteryLevel * 100) + "%" + (Sys.charging ? I18n.t(" · in carica") : "")
                         }
                     }
                 }
@@ -181,7 +181,7 @@ Scope {
                         width: (content.width - 8) / 2
                         icon: Sys.wifiOn ? "network-wireless-signal-excellent-symbolic" : "network-wireless-offline-symbolic"
                         title: "Wi-Fi"
-                        subtitle: Sys.wifiOn ? (Sys.wifiName !== "" ? Sys.wifiName : "Non connesso") : "Spento"
+                        subtitle: Sys.wifiOn ? (Sys.wifiName !== "" ? Sys.wifiName : I18n.t("Non connesso")) : I18n.t("Spento")
                         active: Sys.wifiOn
                         expandable: true
                         onClicked: Sys.setWifi(!Sys.wifiOn)
@@ -191,8 +191,8 @@ Scope {
                         width: (content.width - 8) / 2
                         icon: Sys.btOn ? "bluetooth-active-symbolic" : "bluetooth-disabled-symbolic"
                         title: "Bluetooth"
-                        subtitle: !Sys.btOn ? "Spento"
-                                : Sys.btConnected.length > 0 ? (Sys.btConnected[0].name || Sys.btConnected[0].deviceName) : "Acceso"
+                        subtitle: !Sys.btOn ? I18n.t("Spento")
+                                : Sys.btConnected.length > 0 ? (Sys.btConnected[0].name || Sys.btConnected[0].deviceName) : I18n.t("Acceso")
                         active: Sys.btOn
                         expandable: true
                         onClicked: Sys.setBluetooth(!Sys.btOn)
@@ -211,7 +211,7 @@ Scope {
                     MTile {
                         width: (content.width - 8) / 2
                         icon: "video-display-symbolic"
-                        title: "Schermo"
+                        title: I18n.t("Schermo")
                         subtitle: Math.round(Sys.brightness * 100) + "%" + (Disp.monitors.length > 0 ? " · " + Disp.monitors[0].scale + "×" : "")
                         active: false
                         expandable: true
@@ -221,16 +221,16 @@ Scope {
                     MTile {
                         width: (content.width - 8) / 2
                         icon: Sys.micMuted ? "microphone-sensitivity-muted-symbolic" : "audio-input-microphone-symbolic"
-                        title: "Microfono"
-                        subtitle: Sys.micMuted ? "Muto" : "Attivo"
+                        title: I18n.t("Microfono")
+                        subtitle: Sys.micMuted ? I18n.t("Muto") : I18n.t("Attivo")
                         active: !Sys.micMuted
                         onClicked: Sys.setMicMuted(!Sys.micMuted)
                     }
                     MTile {
                         width: (content.width - 8) / 2
                         icon: "night-light-symbolic"
-                        title: "Luce notturna"
-                        subtitle: Sys.nightOn ? "Accesa" : "Spenta"
+                        title: I18n.t("Luce notturna")
+                        subtitle: Sys.nightOn ? I18n.t("Accesa") : I18n.t("Spenta")
                         active: Sys.nightOn
                         onClicked: Sys.setNight(!Sys.nightOn)
                     }
@@ -242,13 +242,13 @@ Scope {
                     visible: Sys.ethOn
                     icon: "network-wired-symbolic"
                     title: "Ethernet"
-                    subtitle: [Sys.ethIp, Sys.ethSpeedText].filter(x => x !== "").join(" · ") || "Connesso"
+                    subtitle: [Sys.ethIp, Sys.ethSpeedText].filter(x => x !== "").join(" · ") || I18n.t("Connesso")
                     active: true
                 }
                 MTile {
                     width: content.width
                     icon: "user-home-symbolic"
-                    title: "Casa"
+                    title: I18n.t("Casa")
                     subtitle: Casa.headline
                     active: Casa.client.online && Casa.client.lightsOn > 0
                     expandable: true
@@ -259,7 +259,7 @@ Scope {
                 // Volume e luminosità a puntini
                 Card {
                     width: parent.width
-                    title: "Suono e luce"
+                    title: I18n.t("Suono e luce")
                     chevron: true
                     onTitleClicked: root.openPage("audio")
 
@@ -271,7 +271,7 @@ Scope {
                     }
                     MSlider {
                         width: parent.width
-                        label: "Luce"
+                        label: I18n.t("Luce")
                         value: Sys.brightness
                         onMoved: v => Sys.setBrightness(v)
                     }
@@ -281,7 +281,7 @@ Scope {
                 Card {
                     width: parent.width
                     visible: root.player !== null
-                    title: "In riproduzione"
+                    title: I18n.t("In riproduzione")
 
                     Item {
                         width: parent.width
@@ -294,7 +294,7 @@ Scope {
                             spacing: 1
                             Text {
                                 width: parent.width
-                                text: root.player ? (root.player.trackTitle || "Senza titolo") : ""
+                                text: root.player ? (root.player.trackTitle || I18n.t("Senza titolo")) : ""
                                 elide: Text.ElideRight
                                 color: Theme.text
                                 font.family: Theme.fontFamily
@@ -342,7 +342,7 @@ Scope {
                         }
                         MButton { icon: "emblem-system-symbolic"; onClicked: root.advanced(Config.settingsCommand) }
                         MButton { icon: "system-lock-screen-symbolic"; onClicked: root.advanced(Config.lockCommand) }
-                        MButton { primary: true; text: "Sospendi"; onClicked: root.advanced(Config.suspendCommand) }
+                        MButton { primary: true; text: I18n.t("Sospendi"); onClicked: root.advanced(Config.suspendCommand) }
                     }
                 }
             }

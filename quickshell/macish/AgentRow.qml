@@ -50,7 +50,7 @@ Rectangle {
                 anchors.verticalCenter: parent.verticalCenter
                 width: parent.width - 15 - stateLabel.width - 8
                 elide: Text.ElideRight
-                text: (root.a.name || "Agente") + " · " + (root.a.project || "")
+                text: (root.a.name || I18n.t("Agente")) + " · " + (root.a.project || "")
                 color: Theme.text
                 font.family: Theme.fontFamily
                 font.pixelSize: 14
@@ -60,7 +60,7 @@ Rectangle {
                 id: stateLabel
                 anchors.right: parent.right
                 anchors.verticalCenter: parent.verticalCenter
-                text: ({ attende: "Attende", lavora: "Lavora", finito: "Finito", errore: "Errore" })[root.a.state] || root.a.state
+                text: ({ attende: I18n.t("Attende"), lavora: I18n.t("Lavora"), finito: I18n.t("Finito"), errore: I18n.t("Errore") })[root.a.state] || root.a.state
                 color: root.waiting || root.failed ? Theme.alert : root.done ? Theme.textDim : Theme.text
             }
         }
@@ -104,7 +104,7 @@ Rectangle {
             wrapMode: Text.Wrap
             maximumLineCount: 3
             elide: Text.ElideRight
-            text: root.waiting ? (root.a.message || "Chiede la tua conferma") : (root.a.last || "")
+            text: root.waiting ? (root.a.message || I18n.t("Chiede la tua conferma")) : (root.a.last || "")
             visible: text !== ""
             color: Theme.text
             opacity: 0.85
@@ -118,26 +118,26 @@ Rectangle {
             MButton {
                 visible: root.waiting
                 implicitHeight: 30
-                text: "Vai al terminale"
+                text: I18n.t("Vai al terminale")
                 alert: true
                 onClicked: { Agents.focus(root.a); Ui.toggleAgents(); }
             }
             MButton {
                 visible: root.waiting
                 implicitHeight: 30
-                text: "Più tardi"
+                text: I18n.t("Più tardi")
                 onClicked: Agents.markSeen(root.a)
             }
             MButton {
                 visible: !root.waiting
                 implicitHeight: 30
-                text: "Vai"
+                text: I18n.t("Vai")
                 onClicked: { Agents.focus(root.a); Ui.toggleAgents(); }
             }
             MButton {
                 visible: root.done || root.failed
                 implicitHeight: 30
-                text: "Chiudi"
+                text: I18n.t("Chiudi")
                 onClicked: Agents.remove(root.a)
             }
         }

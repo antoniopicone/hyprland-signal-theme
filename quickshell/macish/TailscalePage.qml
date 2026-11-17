@@ -32,9 +32,9 @@ Column {
 
         Text {
             leftPadding: 6
-            text: !Tail.known ? "Controllo dello stato…"
-                : Tail.backend === "NeedsLogin" ? "Accesso richiesto: esegui «tailscale up» in un terminale."
-                : "Tailscale è spento."
+            text: !Tail.known ? I18n.t("Controllo dello stato…")
+                : Tail.backend === "NeedsLogin" ? I18n.t("Accesso richiesto: esegui «tailscale up» in un terminale.")
+                : I18n.t("Tailscale è spento.")
             color: Theme.textDim
             font.family: Theme.fontFamily
             font.pixelSize: Theme.fontSize - 1
@@ -68,7 +68,7 @@ Column {
                 spacing: 1
                 Text {
                     width: parent.width
-                    text: Tail.selfName + " · questo dispositivo"
+                    text: Tail.selfName + I18n.t(" · questo dispositivo")
                     elide: Text.ElideRight
                     color: Theme.text
                     font.family: Theme.fontFamily
@@ -93,7 +93,7 @@ Column {
             }
         }
 
-        SectionLabel { text: "Macchine · " + Tail.onlineCount + " online su " + Tail.peers.length }
+        SectionLabel { text: I18n.t("Macchine · %1 online su %2", Tail.onlineCount, Tail.peers.length) }
 
         Repeater {
             model: ScriptModel {
@@ -178,7 +178,7 @@ Column {
         LinkText {
             x: 6
             anchors.verticalCenter: parent.verticalCenter
-            text: "Apri il pannello Tailscale…"
+            text: I18n.t("Apri il pannello Tailscale…")
             onClicked: root.advanced()
         }
         MButton {

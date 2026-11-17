@@ -155,7 +155,7 @@ Item {
 
             MButton {
                 implicitHeight: 28
-                text: "Chiudi"
+                text: I18n.t("Chiudi")
                 opacity: hover.hovered ? 1 : 0
                 enabled: hover.hovered
                 Behavior on opacity { NumberAnimation { duration: Theme.animFast } }

@@ -50,18 +50,18 @@ Scope {
     }
 
     readonly property var actions: [
-        { name: "Pannello rapido", icon: "emblem-system-symbolic", sub: "Azione", run: () => Ui.toggleControlCenter() },
-        { name: Theme.dark ? "Passa al tema chiaro" : "Passa al tema scuro", icon: Theme.dark ? "weather-clear-symbolic" : "weather-clear-night-symbolic",
-          sub: "Aspetto", run: () => Sys.setDark(!Theme.dark) },
-        { name: Agents.waiting.length ? "Agenti · " + Agents.waiting.length + " in attesa" : "Agenti", icon: "system-run-symbolic",
-          sub: "Agenti", run: () => Ui.toggleAgents() },
-        { name: Notifs.unread ? "Notifiche · da leggere" : "Notifiche", icon: "preferences-system-notifications-symbolic",
-          sub: "Notifiche", run: () => Ui.toggleNotifications() },
-        { name: Notifs.dnd ? "Disattiva Non disturbare" : "Attiva Non disturbare", icon: "notifications-disabled-symbolic",
-          sub: "Notifiche", run: () => { Notifs.dnd = !Notifs.dnd; } },
-        { name: "Nuovo agente", icon: "list-add-symbolic", sub: "Agenti", run: () => Sys.sh(Config.newAgentCommand) },
-        { name: "Blocca schermo", icon: "system-lock-screen-symbolic", sub: "Azione", run: () => Sys.sh(Config.lockCommand) },
-        { name: "Sospendi", icon: "media-playback-pause-symbolic", sub: "Azione", run: () => Sys.sh(Config.suspendCommand) }
+        { name: I18n.t("Pannello rapido"), icon: "emblem-system-symbolic", sub: I18n.t("Azione"), run: () => Ui.toggleControlCenter() },
+        { name: Theme.dark ? I18n.t("Passa al tema chiaro") : I18n.t("Passa al tema scuro"), icon: Theme.dark ? "weather-clear-symbolic" : "weather-clear-night-symbolic",
+          sub: I18n.t("Aspetto"), run: () => Sys.setDark(!Theme.dark) },
+        { name: Agents.waiting.length ? I18n.t("Agenti · %1 in attesa", Agents.waiting.length) : I18n.t("Agenti"), icon: "system-run-symbolic",
+          sub: I18n.t("Agenti"), run: () => Ui.toggleAgents() },
+        { name: Notifs.unread ? I18n.t("Notifiche · da leggere") : I18n.t("Notifiche"), icon: "preferences-system-notifications-symbolic",
+          sub: I18n.t("Notifiche"), run: () => Ui.toggleNotifications() },
+        { name: Notifs.dnd ? I18n.t("Disattiva Non disturbare") : I18n.t("Attiva Non disturbare"), icon: "notifications-disabled-symbolic",
+          sub: I18n.t("Notifiche"), run: () => { Notifs.dnd = !Notifs.dnd; } },
+        { name: I18n.t("Nuovo agente"), icon: "list-add-symbolic", sub: I18n.t("Agenti"), run: () => Sys.sh(Config.newAgentCommand) },
+        { name: I18n.t("Blocca schermo"), icon: "system-lock-screen-symbolic", sub: I18n.t("Azione"), run: () => Sys.sh(Config.lockCommand) },
+        { name: I18n.t("Sospendi"), icon: "media-playback-pause-symbolic", sub: I18n.t("Azione"), run: () => Sys.sh(Config.suspendCommand) }
     ]
 
     function appItem(e) {
@@ -171,7 +171,7 @@ Scope {
                         Text {
                             visible: input.text === ""
                             anchors.verticalCenter: parent.verticalCenter
-                            text: "Cerca app e azioni"
+                            text: I18n.t("Cerca app e azioni")
                             color: Theme.textDim
                             font: input.font
                         }
@@ -204,7 +204,7 @@ Scope {
                         leftPadding: 10
                         topPadding: 4
                         bottomPadding: 6
-                        text: root.query === "" ? "Fissate e azioni" : (root.results.length ? "Risultati" : "Nessun risultato")
+                        text: root.query === "" ? I18n.t("Fissate e azioni") : (root.results.length ? I18n.t("Risultati") : I18n.t("Nessun risultato"))
                     }
 
                     Repeater {
@@ -257,7 +257,7 @@ Scope {
                                 anchors.verticalCenter: parent.verticalCenter
                                 width: Math.min(implicitWidth, 160)
                                 elide: Text.ElideRight
-                                text: parent.current ? "↵ Apri" : parent.modelData.sub
+                                text: parent.current ? I18n.t("↵ Apri") : parent.modelData.sub
                             }
                             MouseArea {
                                 anchors.fill: parent
@@ -276,9 +276,9 @@ Scope {
                     x: 20
                     height: 38
                     spacing: 18
-                    Mono { anchors.verticalCenter: parent.verticalCenter; text: "↑↓ Scegli" }
-                    Mono { anchors.verticalCenter: parent.verticalCenter; text: "↵ Apri" }
-                    Mono { anchors.verticalCenter: parent.verticalCenter; text: "Esc Chiudi" }
+                    Mono { anchors.verticalCenter: parent.verticalCenter; text: I18n.t("↑↓ Scegli") }
+                    Mono { anchors.verticalCenter: parent.verticalCenter; text: I18n.t("↵ Apri") }
+                    Mono { anchors.verticalCenter: parent.verticalCenter; text: I18n.t("Esc Chiudi") }
                 }
             }
         }

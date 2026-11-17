@@ -15,10 +15,10 @@ Singleton {
 
     readonly property var scalePresets: ["1", "1.25", "1.33", "1.5", "1.6", "1.75", "2", "2.5", "3", "4"]
     readonly property var orientations: [
-        { transform: 0, label: "Orizzontale" },
-        { transform: 1, label: "Verticale 90°" },
-        { transform: 2, label: "Capovolto" },
-        { transform: 3, label: "Verticale 270°" }
+        { transform: 0, label: I18n.t("Orizzontale") },
+        { transform: 1, label: I18n.t("Verticale 90°") },
+        { transform: 2, label: I18n.t("Capovolto") },
+        { transform: 3, label: I18n.t("Verticale 270°") }
     ]
 
     function refresh() {

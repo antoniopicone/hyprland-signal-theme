@@ -1,111 +1,127 @@
-# macish · tema Segnale
+# macish · Signal theme
 
-Il desktop come uno strumento di misura: superfici piene, valori e ora nel carattere a
-puntini, etichette in monospazio e un solo colore di segnale per ciò che è attivo.
-Due varianti: **scura** (nero, bianco carta, arancio-rosso) e **chiara** (palette Carta,
-blu inchiostro, ombre nette). La variante segue l'aspetto di sistema
-(`org.gnome.desktop.interface color-scheme`) e con lei cambiano icone, colore d'accento
-GNOME, bordo delle finestre e sfondo.
+[Italiano](README.it.md) · **English**
 
-Gira come istanza Quickshell separata (`qs -c macish`), accanto a `omarchy-shell`.
+![Signal: top bar with the working-agent dot breathing, launcher and quick panel](docs/screenshot.png)
 
-## Installazione
+The desktop as a measuring instrument: solid surfaces, values and time in a dot-matrix
+typeface, monospaced labels and a single signal colour for whatever is active.
+Two variants: **dark** (black, paper white, orange-red) and **light** (Paper palette,
+ink blue, crisp shadows). The variant follows the system appearance
+(`org.gnome.desktop.interface color-scheme`), and icons, GNOME accent colour, window
+border and wallpaper change with it.
+
+It runs as a separate Quickshell instance (`qs -c macish`), alongside `omarchy-shell`.
+The interface is available in **English and Italian**.
+
+## Installation
 
     unzip macish-segnale.zip && cd segnale
-    ./install.sh                    # oppure: ./install.sh --keep-omarchy-bar
+    ./install.sh                    # or: ./install.sh --keep-omarchy-bar
 
-Requisiti: `quickshell` 0.2+, Qt 6.9+, Hyprland. Facoltativi: `nmcli`, `wpctl`,
-`brightnessctl`, `bluetoothctl`, `hyprsunset`. I caratteri (Doto, Geist, Geist Mono)
-vengono scaricati dal repository di Google Fonts.
+Requirements: `quickshell` 0.2+, Qt 6.9+, Hyprland. Optional: `nmcli`, `wpctl`,
+`brightnessctl`, `bluetoothctl`, `hyprsunset`. Fonts (Doto, Geist, Geist Mono) are
+downloaded from the Google Fonts repository.
 
-Se avevi installato Brina, questo pacchetto lo sostituisce: per tornare indietro basta
-rilanciare l'installer di Brina.
+If you had Brina installed, this package replaces it: to go back, just run Brina's
+installer again.
 
-## Cosa installa
+## What it installs
 
-| Dove | Cosa |
+| Where | What |
 |---|---|
-| `~/.config/quickshell/macish` | Barra, binario (dock), launcher, pannello rapido con Wi-Fi/Bluetooth/Audio, notifiche, OSD, sfondo a puntini con l'ora |
-| `~/.config/hypr/macish.lua` o `macish.conf` | Angoli, ombre, bordo, scorciatoie, tasti multimediali (Lua se usi `hyprland.lua`) |
-| `~/.local/share/icons/Segnale-Scuro`, `Segnale-Chiaro` | Temi di icone con cartelle Tinta, 80+ tipi di file, dispositivi, cestino (il resto da Yaru) |
-| `~/.local/bin/agente` | Stato degli agenti per il pannello; hook per Claude Code |
+| `~/.config/quickshell/macish` | Bar, rail (dock), launcher, quick panel with Wi-Fi/Bluetooth/Audio, notifications, OSD, dot-matrix wallpaper with the time |
+| `~/.config/hypr/macish.lua` or `macish.conf` | Corners, shadows, border, shortcuts, media keys (Lua if you use `hyprland.lua`) |
+| `~/.local/share/icons/Segnale-Scuro`, `Segnale-Chiaro` | Icon themes with tinted folders, 80+ file types, devices, trash (the rest from Yaru) |
+| `~/.local/bin/agente` | Agent status for the panel; hook for Claude Code |
 | `~/.local/share/fonts/brina` | Doto, Geist, Geist Mono |
-| `~/.config/omarchy/shell.toml` | Ritocchi ai menu di Omarchy |
+| `~/.config/omarchy/shell.toml` | Tweaks to the Omarchy menus |
 
-L'installer disattiva i plugin notifiche e OSD di Omarchy e ne nasconde la barra.
+The installer disables Omarchy's notification and OSD plugins and hides its bar.
 
-## Scorciatoie
+## Language
 
-| Tasti | Azione |
+The interface follows `LANG` (`it_*` → Italian, anything else → English). To force one,
+set `readonly property string language: "en"` (or `"it"`) in `Config.qml`
+(default: `"auto"`). Translations live in `I18n.qml`: the Italian strings in the code are
+the keys, and `I18n.t("text")` returns the English version. Adding a language means adding
+another table. The `agente` command follows `LANG` too (or `MACISH_LANG`); its command
+names stay in Italian.
+
+## Shortcuts
+
+| Keys | Action |
 |---|---|
-| Super + Spazio | Launcher |
-| Super + Ctrl + C | Pannello rapido (anche clic su stato e ora nella barra) |
-| Super + Ctrl + A | Agenti (anche clic su `AG` nella barra) |
-| Super + Ctrl + M | Notifiche (anche clic sul pallino in alto a sinistra) |
-| Super + Ctrl + N | Tema scuro / chiaro |
-| Tasti volume, luminosità, microfono | OSD di Segnale |
+| Super + Space | Launcher |
+| Super + Ctrl + C | Quick panel (also click the status and time in the bar) |
+| Super + Ctrl + A | Agents (also click `AG` in the bar) |
+| Super + Ctrl + M | Notifications (also click the dot at the top left) |
+| Super + Ctrl + N | Dark / light theme |
+| Volume, brightness, microphone keys | Signal OSD |
 
-## Notifiche
+## Notifications
 
-Il pallino in alto a sinistra, prima dei workspace, è la spia delle notifiche:
+The dot at the top left, before the workspaces, is the notification indicator:
 
-- **pieno, colore del testo**: niente da leggere;
-- **rosso fisso**: notifiche non lette;
-- **solo contorno**: Non disturbare attivo (rosso se nel frattempo è arrivato qualcosa).
+- **filled, text colour**: nothing to read;
+- **solid red**: unread notifications;
+- **outline only**: Do Not Disturb is on (red if something arrived in the meantime).
 
-Un clic apre il cassetto a sinistra: notifiche raggruppate per app (tre in vista, le altre
-con "Altre N"), Cancella per gruppo o tutto, e Non disturbare in cima. Aprendolo, il
-pallino torna del colore del testo. I banner compaiono in alto a sinistra
-(non con Non disturbare, salvo quelli critici).
+A click opens the drawer on the left: notifications grouped by app (three visible, the
+rest behind "N more"), Clear per group or all, and Do Not Disturb at the top. Opening it
+turns the dot back to the text colour. Banners appear at the top left (not under Do Not
+Disturb, except critical ones).
 
-Regola dei colori: **rosso fisso** = c'è qualcosa da leggere, **rosso che lampeggia** =
-qualcuno (un agente) aspetta te.
+Colour rule: **solid red** = there is something to read, **blinking red** = someone (an
+agent) is waiting for you.
 
-Il cassetto, il pannello rapido, il menu Agenti e il binario delle app condividono la
-curvatura del launcher (angoli da 20 px).
+The drawer, the quick panel, the Agents menu and the app rail share the launcher's curvature
+(20 px corners).
 
-## Agenti
+## Agents
 
-La barra mostra `AG` con un puntino per agente: **bianco che respira** = lavora,
-**rosso che lampeggia** = aspetta te, **grigio** = ha finito. Il numero del workspace
-dove sta l'agente prende lo stesso puntino rosso. Il pannello (clic su `AG`, o
-Super + Ctrl + A) elenca gli agenti con cartella, workspace, tempo, ultima azione e
-attività degli ultimi 10 minuti.
+The bar shows `AG` with one dot per agent: **breathing white** = working,
+**blinking red** = waiting for you, **grey** = done. The number of the workspace where the
+agent lives gets the same red dot. The panel (click `AG`, or Super + Ctrl + A) lists the
+agents with folder, workspace, elapsed time, last action and activity over the last
+10 minutes.
 
-Quando un agente chiede qualcosa:
-- la spia lampeggia lenta (una volta al secondo) finché non apri il pannello o vai sulla
-  sua finestra, poi resta rossa fissa finché non rispondi;
-- arriva una notifica critica con "Vai al terminale" (passa anche con Non disturbare);
-- il bordo della sua finestra diventa rosso;
-- se aspetta da più di 5 minuti, ogni minuto la spia lampeggia veloce per qualche secondo.
+When an agent asks for something:
+- the indicator blinks slowly (once a second) until you open the panel or go to its
+  window, then stays solid red until you answer;
+- a critical notification with "Go to terminal" arrives (it also gets through Do Not Disturb);
+- its window border turns red;
+- if it has been waiting for more than 5 minutes, the indicator blinks fast for a few
+  seconds every minute.
 
-**Claude Code** è collegato da solo: l'installer aggiunge gli hook in
-`~/.claude/settings.json` (con backup). Per toglierli: `agente-hooks-claude --rimuovi`.
+**Claude Code** is hooked up automatically: the installer adds the hooks to
+`~/.claude/settings.json` (with a backup). To remove them: `agente-hooks-claude --rimuovi`.
 
-**Altri agenti**: lanciali con `agente avvia codex -- codex` (o qualsiasi comando).
-Uno script può segnalare un'attesa con `agente attende ID "messaggio"`.
-Tutto il resto: `agente --help`.
+**Other agents**: launch them with `agente avvia codex -- codex` (or any command).
+A script can signal a wait with `agente attende ID "message"`.
+Everything else: `agente --help`.
 
-Le richieste di permesso si approvano nel terminale dell'agente: il pannello ti avvisa
-e ti ci porta, ma non approva a distanza.
+Permission requests are approved in the agent's terminal: the panel alerts you and takes
+you there, but does not approve remotely.
 
-## Personalizzare
+## Customising
 
-`~/.config/quickshell/macish/Config.qml`: app fissate, parti da mostrare (`showBar`,
-`showWallpaper`, `wallpaperClock`), gestione di icone e accento, comandi.
-Agenti: `agentBlink` (false = rosso fisso), `agentNudgeAfter`, `agentNotify`,
+`~/.config/quickshell/macish/Config.qml`: pinned apps, parts to show (`showBar`,
+`showWallpaper`, `wallpaperClock`), icon and accent handling, commands, `language`.
+Agents: `agentBlink` (false = solid red), `agentNudgeAfter`, `agentNotify`,
 `agentWindowBorder`, `newAgentCommand`.
-Colori in `Theme.qml`.
+Colours in `Theme.qml`.
 
-## Disinstallare
+## Uninstalling
 
     ./uninstall.sh
 
-## Se qualcosa non va
+## Troubleshooting
 
-- `qs -c macish log` mostra gli errori QML.
-- La barra di Omarchy è ancora visibile: `touch ~/.local/state/omarchy/toggles/bar-off && omarchy-restart-shell`.
-- Notifiche doppie o assenti: `./replace-omarchy-osd.sh` e controlla `omarchy plugin list`.
-- La spia degli agenti non si accende: controlla `agente lista` e che `~/.claude/settings.json` contenga gli hook.
-- Il bordo della finestra attiva non cambia colore: con la configurazione Lua `hyprctl keyword`
-  potrebbe non essere supportato.
+- `qs -c macish log` shows QML errors.
+- Omarchy's bar is still visible: `touch ~/.local/state/omarchy/toggles/bar-off && omarchy-restart-shell`.
+- Duplicate or missing notifications: `./replace-omarchy-osd.sh` and check `omarchy plugin list`.
+- The agent indicator doesn't light up: check `agente lista` and that `~/.claude/settings.json`
+  contains the hooks.
+- The active window border doesn't change colour: with the Lua configuration `hyprctl keyword`
+  may not be supported.

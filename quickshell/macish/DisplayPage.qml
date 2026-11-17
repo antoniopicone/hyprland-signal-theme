@@ -14,17 +14,17 @@ Column {
 
     SubHeader {
         width: parent.width
-        title: "Schermo"
+        title: I18n.t("Schermo")
         onBack: root.back()
     }
 
     Card {
         width: parent.width
-        title: "Luminosità"
+        title: I18n.t("Luminosità")
 
         MSlider {
             width: parent.width
-            label: "Luce"
+            label: I18n.t("Luce")
             value: Sys.brightness
             onMoved: v => Sys.setBrightness(v)
         }
@@ -39,7 +39,7 @@ Column {
             width: root.width
             title: modelData.name + " · " + modelData.width + "×" + modelData.height
 
-            SectionLabel { text: "Scala" }
+            SectionLabel { text: I18n.t("Scala") }
             Flow {
                 width: parent.width
                 spacing: 6
@@ -55,7 +55,7 @@ Column {
                 }
             }
 
-            SectionLabel { text: "Orientamento" }
+            SectionLabel { text: I18n.t("Orientamento") }
             Flow {
                 width: parent.width
                 spacing: 6
@@ -91,7 +91,7 @@ Column {
         LinkText {
             x: 6
             anchors.verticalCenter: parent.verticalCenter
-            text: "Altre impostazioni dello schermo…"
+            text: I18n.t("Altre impostazioni dello schermo…")
             onClicked: root.advanced()
         }
     }

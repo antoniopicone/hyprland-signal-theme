@@ -52,7 +52,7 @@ Column {
             onMoved: v => Sys.setVolume(v)
         }
 
-        SectionLabel { text: "Uscita" }
+        SectionLabel { text: I18n.t("Uscita") }
 
         Repeater {
             model: ScriptModel { values: root.outputs }
@@ -72,7 +72,7 @@ Column {
         width: parent.width
         visible: root.inputs.length > 0
 
-        SectionLabel { text: "Ingresso" }
+        SectionLabel { text: I18n.t("Ingresso") }
 
         Repeater {
             model: ScriptModel { values: root.inputs }
@@ -81,7 +81,7 @@ Column {
                 width: parent.width
                 icon: "audio-input-microphone-symbolic"
                 title: root.label(modelData)
-                subtitle: modelData === Sys.source && Sys.micMuted ? "Disattivato" : ""
+                subtitle: modelData === Sys.source && Sys.micMuted ? I18n.t("Disattivato") : ""
                 active: modelData === Sys.source
                 checked: modelData === Sys.source
                 onClicked: Pipewire.preferredDefaultAudioSource = modelData
@@ -93,7 +93,7 @@ Column {
         width: parent.width
         visible: root.apps.length > 0
 
-        SectionLabel { text: "Applicazioni" }
+        SectionLabel { text: I18n.t("Applicazioni") }
 
         Repeater {
             model: ScriptModel { values: root.apps }
@@ -134,7 +134,7 @@ Column {
 
     LinkText {
         x: 6
-        text: "Impostazioni audio…"
+        text: I18n.t("Impostazioni audio…")
         onClicked: root.advanced()
     }
 }

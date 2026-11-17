@@ -34,11 +34,11 @@ Column {
     }
 
     function subtitleFor(d) {
-        if (root.pairing === d.address) return "Associazione…";
-        if (d.state === BluetoothDeviceState.Connecting) return "Connessione…";
-        if (d.state === BluetoothDeviceState.Disconnecting) return "Disconnessione…";
-        if (d.connected) return "Connesso" + (d.batteryAvailable ? " · batteria " + Math.round(d.battery * 100) + "%" : "");
-        return "Non connesso";
+        if (root.pairing === d.address) return I18n.t("Associazione…");
+        if (d.state === BluetoothDeviceState.Connecting) return I18n.t("Connessione…");
+        if (d.state === BluetoothDeviceState.Disconnecting) return I18n.t("Disconnessione…");
+        if (d.connected) return I18n.t("Connesso") + (d.batteryAvailable ? I18n.t(" · batteria ") + Math.round(d.battery * 100) + "%" : "");
+        return I18n.t("Non connesso");
     }
 
     function choose(d) {
@@ -75,7 +75,7 @@ Column {
         width: parent.width
         visible: Sys.btOn && root.known.length > 0
 
-        SectionLabel { text: "I miei dispositivi" }
+        SectionLabel { text: I18n.t("I miei dispositivi") }
 
         Repeater {
             model: ScriptModel { values: root.known }
@@ -87,7 +87,7 @@ Column {
                 subtitle: root.subtitleFor(modelData)
                 active: modelData.connected
                 busy: modelData.state === BluetoothDeviceState.Connecting || modelData.state === BluetoothDeviceState.Disconnecting
-                actionText: "Dimentica"
+                actionText: I18n.t("Dimentica")
                 onClicked: root.choose(modelData)
                 onActionClicked: modelData.forget()
             }
@@ -98,12 +98,12 @@ Column {
         width: parent.width
         visible: Sys.btOn
 
-        SectionLabel { text: root.adapter && root.adapter.discovering ? "Altri dispositivi · ricerca…" : "Altri dispositivi" }
+        SectionLabel { text: root.adapter && root.adapter.discovering ? I18n.t("Altri dispositivi · ricerca…") : I18n.t("Altri dispositivi") }
 
         Text {
             visible: root.others.length === 0
             leftPadding: 6
-            text: "Nessun dispositivo trovato nelle vicinanze"
+            text: I18n.t("Nessun dispositivo trovato nelle vicinanze")
             color: Theme.textDim
             font.family: Theme.fontFamily
             font.pixelSize: Theme.fontSize - 1
@@ -116,7 +116,7 @@ Column {
                 width: parent.width
                 icon: root.iconFor(modelData)
                 title: modelData.name || modelData.deviceName
-                subtitle: root.pairing === modelData.address ? "Associazione…" : ""
+                subtitle: root.pairing === modelData.address ? I18n.t("Associazione…") : ""
                 busy: root.pairing === modelData.address
                 onClicked: if (root.pairing === "") root.choose(modelData)
             }
@@ -125,7 +125,7 @@ Column {
 
     LinkText {
         x: 6
-        text: "Impostazioni Bluetooth…"
+        text: I18n.t("Impostazioni Bluetooth…")
         onClicked: root.advanced()
     }
 }

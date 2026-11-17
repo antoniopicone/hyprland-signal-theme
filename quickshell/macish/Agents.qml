@@ -48,7 +48,7 @@ Singleton {
     function norm(addr) { return (addr || "").toLowerCase().replace(/^0x/, ""); }
 
     function focus(a) {
-        if (a.window) Quickshell.execDetached(["hyprctl", "dispatch", "focuswindow", "address:0x" + norm(a.window)]);
+        if (a.window) Quickshell.execDetached(["hyprctl", "dispatch", "focuswindow", "address:0x" + norm(a.window), I18n.t("Vai al terminale")]);
         else if (a.workspace) Quickshell.execDetached(["hyprctl", "dispatch", "workspace", String(a.workspace)]);
         markSeen(a);
     }
@@ -63,7 +63,7 @@ Singleton {
 
     function elapsed(a) {
         const s = Math.max(0, now - a.since);
-        if (s < 60) return "ora";
+        if (s < 60) return I18n.t("ora");
         if (s < 3600) return Math.floor(s / 60) + " min";
         return Math.floor(s / 3600) + " h " + Math.floor((s % 3600) / 60) + " min";
     }
@@ -84,10 +84,10 @@ Singleton {
     // ---------- avvisi: notifica critica e bordo rosso ----------
     function onEnterWaiting(a) {
         if (Config.agentNotify) {
-            const title = (a.name || "Agente") + " · " + (a.project || "") + " attende";
-            const body = a.message || "Chiede la tua conferma";
+            const title = I18n.t("%1 · %2 attende", a.name || I18n.t("Agente"), a.project || "");
+            const body = a.message || I18n.t("Chiede la tua conferma");
             Quickshell.execDetached(["sh", "-c",
-                'r=$(notify-send -u critical -a Agenti -i dialog-warning -A vai="Vai al terminale" "$1" "$2"); ' +
+                'r=$(notify-send -u critical -a Agenti -i dialog-warning -A vai="$4" "$1" "$2"); ' +
                 '[ "$r" = vai ] && [ -n "$3" ] && hyprctl dispatch focuswindow "address:0x$3"',
                 "sh", title, body, norm(a.window)]);
         }

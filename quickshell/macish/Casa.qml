@@ -13,12 +13,12 @@ Singleton {
 
     readonly property string headline: {
         switch (ha.status) {
-        case "unconfigured": return "Non configurata";
-        case "auth": return "Token non valido";
-        case "offline": return "Non raggiungibile";
+        case "unconfigured": return I18n.t("Non configurata");
+        case "auth": return I18n.t("Token non valido");
+        case "offline": return I18n.t("Non raggiungibile");
         }
-        if (!ha.online) return "Connessione…";
-        return ha.lightsOn > 0 ? ha.lightsOn + " luci accese su " + ha.lightCount : "Tutte le luci spente";
+        if (!ha.online) return I18n.t("Connessione…");
+        return ha.lightsOn > 0 ? I18n.t("%1 luci accese su %2", ha.lightsOn, ha.lightCount) : I18n.t("Tutte le luci spente");
     }
 
     HaClient {

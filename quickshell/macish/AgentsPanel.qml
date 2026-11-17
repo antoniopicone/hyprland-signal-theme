@@ -95,17 +95,17 @@ Scope {
                             anchors.bottom: parent.bottom
                             anchors.bottomMargin: 6
                             font.pixelSize: 30
-                            text: "AGENTI"
+                            text: I18n.t("AGENTI")
                         }
                         Mono {
                             anchors.right: parent.right
                             anchors.rightMargin: 4
                             anchors.bottom: parent.bottom
                             anchors.bottomMargin: 9
-                            text: Agents.list.length === 0 ? "nessuno attivo"
-                                : [Agents.working ? Agents.working + (Agents.working === 1 ? " lavora" : " lavorano") : "",
-                                   Agents.waiting.length ? Agents.waiting.length + " attende" + (Agents.waiting.length === 1 ? "" : "no") : ""]
-                                  .filter(s => s).join(" · ") || "tutti fermi"
+                            text: Agents.list.length === 0 ? I18n.t("nessuno attivo")
+                                : [Agents.working ? I18n.t(Agents.working === 1 ? "%1 lavora" : "%1 lavorano", Agents.working) : "",
+                                   Agents.waiting.length ? I18n.t(Agents.waiting.length === 1 ? "%1 attende" : "%1 attendono", Agents.waiting.length) : ""]
+                                  .filter(s => s).join(" · ") || I18n.t("tutti fermi")
                             color: Agents.waiting.length ? Theme.alert : Theme.textDim
                         }
                     }
@@ -116,7 +116,7 @@ Scope {
                         Text {
                             width: parent.width
                             wrapMode: Text.Wrap
-                            text: "Avvia Claude Code in un terminale (con gli hook installati) oppure un altro agente con  agente avvia <nome> -- <comando>: comparirà qui."
+                            text: I18n.t("Avvia Claude Code in un terminale (con gli hook installati) oppure un altro agente con  agente avvia <nome> -- <comando>: comparirà qui.")
                             color: Theme.textDim
                             font.family: Theme.fontFamily
                             font.pixelSize: 12
@@ -138,10 +138,10 @@ Scope {
                         Row {
                             anchors.verticalCenter: parent.verticalCenter
                             spacing: 6
-                            MButton { text: "+ Nuovo agente"; onClicked: { root.open = false; Sys.sh(Config.newAgentCommand); } }
+                            MButton { text: I18n.t("+ Nuovo agente"); onClicked: { root.open = false; Sys.sh(Config.newAgentCommand); } }
                             MButton {
                                 visible: Agents.list.some(a => a.state === "finito" || a.state === "errore")
-                                text: "Pulisci finiti"
+                                text: I18n.t("Pulisci finiti")
                                 onClicked: Agents.clearFinished()
                             }
                         }

@@ -20,10 +20,10 @@ Singleton {
     readonly property var day: ({
         panel: "#FBF9F4", card: "#F3EEE4", cardHi: "#E9E4D9", cardPressed: "#DED6C7",
         stroke: Qt.rgba(0.106, 0.102, 0.09, 0.16), sheen: "transparent", rim: "transparent",
-        text: "#1B1A17", dim: "#6B675E", on: "#1B1A17", onText: "#FBF9F4", onDim: "#B9B3A6",
-        off: Qt.rgba(0.106, 0.102, 0.09, 0.20), signal: "#2F45D6", onSignal: "#FBF9F4", shadow: Qt.rgba(0.106, 0.102, 0.09, 0.10), danger: "#C0322B", alert: "#2F45D6", alertBorder: "rgba(2f45d6ff)",
+        text: "#1B1A17", dim: "#6B675E", on: "#D8D0BA", onText: "#1B1A17", onDim: "#8C866F",
+        off: Qt.rgba(0.106, 0.102, 0.09, 0.20), signal: "#CB4B16", onSignal: "#FBF9F4", shadow: Qt.rgba(0.106, 0.102, 0.09, 0.10), danger: "#C0322B", alert: "#CB4B16", alertBorder: "rgba(cb4b16ff)",
         hardShadow: true, wall: "#EFEAE0", wallDot: "#D6CFC0", wallClock: "#E2DCCF",
-        accentName: "blue", border: "rgba(1b1a1799)", icons: "Segnale-Chiaro"
+        accentName: "orange", border: "rgba(1b1a1799)", icons: "Segnale-Chiaro"
     })
     readonly property var p: dark ? night : day
 

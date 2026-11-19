@@ -1,0 +1,33 @@
+# Segnale (scuro): palette di quickshell/macish/Theme.qml (night).
+mode = "dark"
+
+accent = "#EDEDE8"
+selection = "#2A2A2A"
+selection_foreground = "#EDEDE8"
+muted = "#55554F"
+
+background = "#0A0A0A"
+dark_background = "#050505"
+darker_background = "#000000"
+lighter_background = "#1A1A1A"
+
+foreground = "#EDEDE8"
+dark_foreground = "#8A8A85"
+light_foreground = "#F4F4EF"
+bright_foreground = "#FFFFFF"
+
+red = "#FF6B5F"
+yellow = "#E8B84A"
+orange = "#D98A4E"
+green = "#7FB069"
+cyan = "#5FB3B3"
+blue = "#6FA0D8"
+magenta = "#B58BD0"
+brown = "#8C6A50"
+
+bright_red = "#FF8F85"
+bright_yellow = "#F2CC76"
+bright_green = "#9CC98A"
+bright_cyan = "#86CACA"
+bright_blue = "#93B9E4"
+bright_magenta = "#CBA9DE"

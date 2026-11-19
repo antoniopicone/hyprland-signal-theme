@@ -17,12 +17,17 @@ Singleton {
     // Lingua dell'interfaccia: "auto" (segue LANG), "it" o "en"
     readonly property string language: "auto"
 
+    // Temi Omarchy applicati cambiando aspetto (colori di terminale, zapfast e altre app).
+    // Vuoti = cambia solo il color-scheme di GNOME. Nomi come in `omarchy-theme-list`.
+    readonly property string lightTheme: "Segnale Chiaro"
+    readonly property string darkTheme: "Segnale Scuro"
+
     // Parti della shell
     readonly property bool showBar: true          // barra in alto di Segnale (nasconde quella di Omarchy all'installazione)
     readonly property bool showWallpaper: true    // sfondo a puntini di Segnale
     readonly property bool wallpaperClock: true   // ora grande a puntini sullo sfondo
     readonly property bool manageIcons: true      // icone Segnale-Scuro / Segnale-Chiaro seguono l'aspetto
-    readonly property bool manageAccent: true     // colore d'accento GNOME e bordo finestre seguono l'aspetto
+    readonly property bool manageAccent: false    // colore d'accento GNOME e bordo finestre seguono l'aspetto
 
     // Misure
     readonly property int barHeight: 44           // oltre il notch (40 px logici a scala 1.6)

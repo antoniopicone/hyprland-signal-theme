@@ -13,17 +13,17 @@ Singleton {
         panel: "#111111", card: "#1A1A1A", cardHi: "#222222", cardPressed: "#2A2A2A",
         stroke: "#2A2A2A", sheen: "transparent", rim: "transparent",
         text: "#EDEDE8", dim: "#8A8A85", on: "#EDEDE8", onText: "#0A0A0A", onDim: "#55554F",
-        off: "#2E2E2E", signal: "#FF4A1C", onSignal: "#0A0A0A", shadow: Qt.rgba(0, 0, 0, 0.6), danger: "#FF6B5F", alert: "#FF4A1C", alertBorder: "rgba(ff4a1cff)",
-        hardShadow: false, wall: "#0A0A0A", wallDot: "#202020", wallClock: "#1A1A1A",
+        off: "#2E2E2E", signal: "#FF4A1C", onSignal: "#0A0A0A", shadow: Qt.rgba(0, 0, 0, 0.7), danger: "#FF6B5F", alert: "#FF4A1C", alertBorder: "rgba(ff4a1cff)",
+        hardShadow: true, wall: "#0A0A0A", wallDot: "#202020", wallClock: "#1A1A1A",
         accentName: "orange", border: "rgba(ffffff99)", icons: "Segnale-Scuro"
     })
     readonly property var day: ({
-        panel: "#FBF9F4", card: "#F3EEE4", cardHi: "#E9E4D9", cardPressed: "#DED6C7",
-        stroke: Qt.rgba(0.106, 0.102, 0.09, 0.16), sheen: "transparent", rim: "transparent",
-        text: "#1B1A17", dim: "#6B675E", on: "#D8D0BA", onText: "#1B1A17", onDim: "#8C866F",
-        off: Qt.rgba(0.106, 0.102, 0.09, 0.20), signal: "#CB4B16", onSignal: "#FBF9F4", shadow: Qt.rgba(0.106, 0.102, 0.09, 0.10), danger: "#C0322B", alert: "#CB4B16", alertBorder: "rgba(cb4b16ff)",
-        hardShadow: true, wall: "#EFEAE0", wallDot: "#D6CFC0", wallClock: "#E2DCCF",
-        accentName: "orange", border: "rgba(1b1a1799)", icons: "Segnale-Chiaro"
+        panel: "#FAFAFA", card: "#F2F2F2", cardHi: "#E8E8E9", cardPressed: "#DEDEDF",
+        stroke: Qt.rgba(0.114, 0.114, 0.122, 0.16), sheen: "transparent", rim: "transparent",
+        text: "#1D1D1F", dim: "#6B6B6E", on: "#DEDEE0", onText: "#1D1D1F", onDim: "#8A8A8C",
+        off: Qt.rgba(0.114, 0.114, 0.122, 0.20), signal: "#CB4B16", onSignal: "#FAFAFA", shadow: Qt.rgba(0.114, 0.114, 0.122, 0.10), danger: "#C0322B", alert: "#CB4B16", alertBorder: "rgba(cb4b16ff)",
+        hardShadow: true, wall: "#EDEDED", wallDot: "#D4D4D4", wallClock: "#E0E0E0",
+        accentName: "orange", border: "rgba(1d1d1f99)", icons: "Segnale-Chiaro"
     })
     readonly property var p: dark ? night : day
 

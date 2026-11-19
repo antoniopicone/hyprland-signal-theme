@@ -113,7 +113,11 @@ Singleton {
 
     function setDark(on) {
         darkScheme = on;
-        sh("gsettings set org.gnome.desktop.interface color-scheme " + (on ? "prefer-dark" : "prefer-light"));
+        let cmd = "gsettings set org.gnome.desktop.interface color-scheme " + (on ? "prefer-dark" : "prefer-light");
+        // Il tema Omarchy decide i colori delle app (zapfast, terminale...): lo applico in coppia.
+        const theme = on ? Config.darkTheme : Config.lightTheme;
+        if (theme !== "") cmd += "; omarchy-theme-set '" + theme + "'";
+        sh(cmd);
     }
 
     function setBrightness(v) {

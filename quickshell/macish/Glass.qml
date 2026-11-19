@@ -2,7 +2,7 @@ import QtQuick
 import QtQuick.Effects
 
 // Pannello Segnale: superficie piena con bordo sottile.
-// Scuro: alone morbido. Chiaro: ombra netta spostata, come fogli impilati.
+// Chiaro e scuro: ombra netta spostata, come fogli impilati. Alone morbido solo se hardShadow è false.
 Item {
     id: root
     property real radius: Theme.radiusPanel

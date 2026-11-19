@@ -336,7 +336,6 @@ Scope {
                         anchors.verticalCenter: parent.verticalCenter
                         spacing: 6
                         MButton {
-                            enabled: false      // finché non c'è un tema chiaro
                             icon: Theme.dark ? "weather-clear-night-symbolic" : "weather-clear-symbolic"
                             onClicked: Sys.setDark(!Theme.dark)
                         }
